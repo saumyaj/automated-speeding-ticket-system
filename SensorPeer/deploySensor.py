@@ -1,0 +1,25 @@
+import multiprocessing
+
+from sensorPeer import *
+
+# sensor = SensorPeer(10, 1025)
+
+def start_mainloop(peer):
+    peer.mainloop()
+
+def initialize(peer):
+    peer.register_to_server()
+
+def main():
+    peer = SensorPeer(10, 1025)
+    p1 = multiprocessing.Process(target=start_mainloop, args = (peer, ))
+    p2 = multiprocessing.Process(target=initialize, args = (peer, ))
+
+    p1.start()
+    p2.start()
+
+    p2.join()
+    print 'process 2 finished execution!'
+  
+if __name__== "__main__":
+    main()
