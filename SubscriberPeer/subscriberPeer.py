@@ -6,35 +6,31 @@ sys.path.append(os.path.realpath('../p2p'))
 
 from networkPeer import *
 
-# Sengin message types
-REGSENSOR = 'REGS'  # Register sensor
-PUBIMG = 'PIMG'  # publishing image
-SRVRLSTREQ = 'MLST'  # ask for messageserver list
+#Sending message Types
+PULLIMG = 'PULL'  # pull images request
+REGSUB = 'RSUB'  # Registing the subscriber
+
+#Receiving message types
+DATA = 'DATA'  # Sending pulled data from cloud
 
 #Receiving response (not the message) types
 ACKOK = 'ACKO'
 NACK = 'NACK'
-SRVRLSTRES = 'MLST'
-ACKDATA = 'DACK'
+ACKPULL = 'ACKP'  # Achknowledge pull req
 
 
-class SensorPeer(NetworkPeer):
+class SubscriberPeer(NetworkPeer):
     def __init__(self, maxpeers, serverport, myid=None, debug=0):
         NetworkPeer.__init__(self,
                              maxpeers,
                              serverport,
-                             PeerType.SENSOR,
+                             PeerType.SUBSCRIBER,
                              myid,
                              debug=debug)
 
-        # self.register_to_server()
-
         # TODO - add handlers if any
-        handlers = {}
+        handlers = {DATA: self.handle_pulled_data}
         self.add_handlers(handlers)
-
-    def send_image_data(self, data):
-        self.sendtopeer('main_server', 'IMGDATA', data)
 
     def register_to_server(self):
         server_list = self.get_server_list_dict()
@@ -42,13 +38,14 @@ class SensorPeer(NetworkPeer):
             id, host, port = server
 
             # First try to register with the core
-            responses = self.connectandsend(host, port, REGSENSOR,
+            print host, port
+            responses = self.connectandsend(host, port, REGSUB,
                                             json.dumps(self.identification))
             if len(responses) > 0:
                 msgtype, msg = responses[0]
                 if msgtype == ACKOK:
                     self.add_typed_peer(id, host, port, PeerType.MESSAGESERVER)
-                    print 'registration with a message server successful'
+                    print 'subscriber has registered successfully'
                 elif msgtype == NACK:
                     # Ask for the list
                     res = self.connectandsend(host, port, SRVRLSTREQ, '')
@@ -63,8 +60,7 @@ class SensorPeer(NetworkPeer):
     def try_connecting_once(self, peerlist):
         for peer in peerlist:
             id, host, port = peer
-            responses = self.connectandsend(host, port, REGSENSOR,
-                                            json.dumps(self.identification))
+            responses = self.connectandsend(host, port, REGSUB, '')
             if len(responses) > 0:
                 msgtype, msg = responses[0]
                 if msgtype == ACKOK:
@@ -77,8 +73,19 @@ class SensorPeer(NetworkPeer):
         # TODO - call the http function to get registration details
         return [('192.168.0.222:1024', '192.168.0.222', 1024)]
 
-    def publish_message(self, msg):
+    def get_new_data_to_process(self, qty=5):
         recipient_id = self.get_peer_ids(PeerType.MESSAGESERVER)[0]
-        print('sending to ', recipient_id)
-        res = self.sendtopeer(recipient_id, PUBIMG, msg)
+        print('getting new data from ', recipient_id)
+        datadict = {}
+        datadict['qty'] = qty
+        datadict['address'] = self.myid
+        res = self.sendtopeer(recipient_id, PULLIMG, json.dumps(datadict))
         print(res)
+
+    def handle_pulled_data(self, peerconn, data):
+        # TODO - Call the image processing services
+        print 'data handler invoked!'
+        datadict = json.loads(data)
+        for d in datadict:
+            di = json.loads(d)
+            print di['speed']
