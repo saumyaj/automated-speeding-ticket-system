@@ -82,6 +82,14 @@ class SubscriberPeer(NetworkPeer):
         res = self.sendtopeer(recipient_id, PULLIMG, json.dumps(datadict))
         print(res)
 
+
+    def save_image_to_jpg(image_bytes, filename):
+        pass
+
+    def call_detection_process(filename):
+        anpr_dir = ''
+        os.system('./detector_script.sh ' + anpr_dir + ' ' + filename)
+
     def handle_pulled_data(self, peerconn, data):
         # TODO - Call the image processing services
         print 'data handler invoked!'
@@ -89,3 +97,9 @@ class SubscriberPeer(NetworkPeer):
         for d in datadict:
             di = json.loads(d)
             print di['speed']
+            filename = 'image.jpg'
+            save_image_to_jpg(di['image'], filename)
+            call_detection_process(filename)
+
+
+
