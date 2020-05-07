@@ -9,7 +9,7 @@ from networkPeer import *
 # Sengin message types
 REGSENSOR = 'REGS'  # Register sensor
 PUBIMG = 'PIMG'  # publishing image
-SRVRLSTREQ = 'MLST'  # ask for messageserver list
+SRVRLSTREQ = 'SLST'  # ask for messageserver list
 
 #Receiving response (not the message) types
 ACKOK = 'ACKO'

@@ -9,6 +9,7 @@ from networkPeer import *
 #Sending message Types
 PULLIMG = 'PULL'  # pull images request
 REGSUB = 'RSUB'  # Registing the subscriber
+SRVRLSTREQ = 'SLST'
 
 #Receiving message types
 DATA = 'DATA'  # Sending pulled data from cloud

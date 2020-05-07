@@ -164,10 +164,12 @@ class MessageServerPeer(NetworkPeer):
         peerconn.senddata(ACKOK, '')
 
     def handle_server_list_request(self, peerconn, data):
+        print 'server list req received!'
         server_list_dict = self.typed_peerlist.get(PeerType.MESSAGESERVER.name,
                                                    {})
         server_list = []
         for key in server_list_dict.keys():
             ip, port = server_list_dict[key]
             server_list.append((key, ip, port))
+        print server_list
         peerconn.senddata('XXXX', json.dumps(server_list))
