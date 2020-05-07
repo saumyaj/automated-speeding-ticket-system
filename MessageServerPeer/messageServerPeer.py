@@ -20,6 +20,7 @@ REGSENSOR = 'REGS'  #Register sensor
 PULLIMG = 'PULL'  # pull images request
 REGSUB = 'RSUB'  # Registing the subscriber
 REGMSGSRVR = 'RSVR'  # REGISTER MESSAGE SERVER with other message servers
+SRVRLSTREQ = 'SLST'  # Return active msg server list
 
 #Receiving response (not the message) types
 ACKOK = 'ACKO'
@@ -31,8 +32,8 @@ ACKPULL = 'ACKP'  # Achknowledge pull req
 
 # Maximum peers of each type
 # TODO add to the constructor??
-MAXSENSORPEERS = 5
-MAXSUBSCRIBERPEERS = 5
+MAXSENSORPEERS = 1
+MAXSUBSCRIBERPEERS = 1
 
 
 class MessageServerPeer(NetworkPeer):
@@ -50,7 +51,8 @@ class MessageServerPeer(NetworkPeer):
             REGSENSOR: self.handle_sensor_registration,
             REGSUB: self.handle_subscriber_registration,
             PULLIMG: self.handle_pull_image_request,
-            REGMSGSRVR: self.handle_message_server_registration
+            REGMSGSRVR: self.handle_message_server_registration,
+            SRVRLSTREQ: self.handle_server_list_request
         }
         self.add_handlers(handlers)
 
@@ -126,6 +128,7 @@ class MessageServerPeer(NetworkPeer):
     def handle_sensor_registration(self, peerconn, data):
         number_of_registered_sensors = len(
             self.typed_peerlist.get(PeerType.SENSOR.name, {}))
+        print 'reg sensors: ', number_of_registered_sensors
         if number_of_registered_sensors == self.max_sensors:
             peerconn.senddata(NACK, '')
             return
@@ -159,3 +162,12 @@ class MessageServerPeer(NetworkPeer):
         port = datadict['port']
         self.add_typed_peer(id, host, port, PeerType.MESSAGESERVER)
         peerconn.senddata(ACKOK, '')
+
+    def handle_server_list_request(self, peerconn, data):
+        server_list_dict = self.typed_peerlist.get(PeerType.MESSAGESERVER.name,
+                                                   {})
+        server_list = []
+        for key in server_list_dict.keys():
+            ip, port = server_list_dict[key]
+            server_list.append((key, ip, port))
+        peerconn.senddata('XXXX', json.dumps(server_list))

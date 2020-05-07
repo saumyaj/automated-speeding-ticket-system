@@ -29,7 +29,6 @@ def send_messages(peer):
 
 def main():
     peer = SensorPeer(10, 1025, debug=0)
-    initialize(peer)
     p1 = multiprocessing.Process(target=start_mainloop, args=(peer, ))
     p2 = multiprocessing.Process(target=simulate, args=(peer, ))
 

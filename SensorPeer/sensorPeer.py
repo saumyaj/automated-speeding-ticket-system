@@ -35,11 +35,13 @@ class SensorPeer(NetworkPeer):
         self.sendtopeer('main_server', 'IMGDATA', data)
 
     def register_to_server(self):
+        print 'called!'
         server_list = self.get_server_list()
         print server_list
         for server in server_list:
-            id, host, port = server
 
+            id, host, port = server
+            print id
             # First try to register with the core
             responses = self.connectandsend(host, port, REGSENSOR,
                                             json.dumps(self.identification))
