@@ -12,7 +12,7 @@ def initialize(peer):
 
 
 def main():
-    peer = MessageServerPeer(10, 1024, debug=1)
+    peer = MessageServerPeer(10, 1024, debug=0)
     p1 = multiprocessing.Process(target=start_mainloop, args=(peer, ))
     p2 = multiprocessing.Process(target=initialize, args=(peer, ))
 

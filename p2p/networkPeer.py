@@ -2,10 +2,13 @@ import sys
 import os
 import base64
 import json
+import requests
 from enum import Enum
 sys.path.append(os.path.realpath('../p2p'))
+sys.path.append(os.path.realpath('../gcloud_creds'))
 
 from btpeer import *
+from CloudData import CLOUD_FUNCTION_URL
 
 #sending Message type for registration messages
 REGMSG = 'RGST'  # REGISTER
@@ -62,3 +65,14 @@ class NetworkPeer(BTPeer):
         peerTypeName = str(peerType.name)
         peer_dict = self.typed_peerlist.get(peerTypeName, {})
         return peer_dict.keys()
+
+    def get_server_list(self):
+        try:
+            r = requests.get(url=CLOUD_FUNCTION_URL, params={})
+            data = r.json()
+            ip = data['ip']
+            ip = ip.encode('ascii', 'ignore')
+            port = data['port']
+        except:
+            print 'exception!'
+        return [(ip + ':' + str(port), ip, int(port))]

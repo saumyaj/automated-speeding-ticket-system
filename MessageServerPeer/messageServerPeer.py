@@ -29,6 +29,11 @@ NACK = 'NACK'
 ACKDATA = 'DACK'
 ACKPULL = 'ACKP'  # Achknowledge pull req
 
+# Maximum peers of each type
+# TODO add to the constructor??
+MAXSENSORPEERS = 5
+MAXSUBSCRIBERPEERS = 5
+
 
 class MessageServerPeer(NetworkPeer):
     def __init__(self, maxpeers, serverport, myid=None, debug=0):
@@ -58,41 +63,31 @@ class MessageServerPeer(NetworkPeer):
         self.subscription_path = self.subscriber.subscription_path(
             'cc2020-project2', 'plates')
 
+        self.max_sensors = MAXSENSORPEERS
+        self.max_subscribers = MAXSUBSCRIBERPEERS
+
     def register_to_server(self):
-
-        # TODO - fix this for registration process with cloud function
-        # temporarily make self a core node
-        print self.myid
-        if self.myid == '192.168.0.222:1024':
-            print 'id matched!'
-            return
-        else:
-            print 'id not matched!'
-
-            return
-
         server_list = self.get_server_list()
-        if len(server_list) == 0:
-            reg_self_as_core()
-        else:
-            for server in server_list:
-                id, host, port = server
-                if id == self.myid:
-                    continue
-                res = self.connectandsend(host, port, REGMSGSRVR,
-                                          json.dumps(self.identification))
-                msgtype, _ = res[0]
-                if msgtype == ACKOK:
-                    self.add_typed_peer(id, host, port, PeerType.MESSAGESERVER)
+        for server in server_list:
+            id, host, port = server
+            if self.myid == id:
+                print 'Booting up core server!'
+                return
+
+        for server in server_list:
+            id, host, port = server
+            if id == self.myid:
+                continue
+            res = self.connectandsend(host, port, REGMSGSRVR,
+                                      json.dumps(self.identification))
+            msgtype, _ = res[0]
+            if msgtype == ACKOK:
+                self.add_typed_peer(id, host, port, PeerType.MESSAGESERVER)
+                print 'Registration with the core msg server successful!'
 
     def reg_self_as_core(self):
         # TODO - send http func req to add self as core
         pass
-
-    def get_server_list(self):
-
-        # TODO - call the http function to get registration details
-        return [('192.168.0.222:1026', '192.168.0.222', 1026)]
 
     def get_and_send_images_from_subscription(self, peer_id, qty):
         # The subscriber pulls a specific number of messages.
@@ -127,8 +122,14 @@ class MessageServerPeer(NetworkPeer):
         peerconn.senddata(ACKPULL, 'Request Received!')
         self.get_and_send_images_from_subscription(peer_id, qty)
 
-    # TODO - limit number of sensors allowed to register
+    # TODO - Test limit number of sensors allowed to register
     def handle_sensor_registration(self, peerconn, data):
+        number_of_registered_sensors = len(
+            self.typed_peerlist.get(PeerType.SENSOR.name, {}))
+        if number_of_registered_sensors == self.max_sensors:
+            peerconn.senddata(NACK, '')
+            return
+
         datadict = json.loads(data)
         id = datadict['id']
         host = datadict['host']
@@ -136,8 +137,14 @@ class MessageServerPeer(NetworkPeer):
         self.add_typed_peer(id, host, port, PeerType.SENSOR)
         peerconn.senddata(ACKOK, '')
 
-    # TODO - limit number of subscribers allowed to register
+    # TODO - Test limit number of subscribers allowed to register
     def handle_subscriber_registration(self, peerconn, data):
+        number_of_registered_subscribers = len(
+            self.typed_peerlist.get(PeerType.SUBSCRIBER.name, {}))
+        if number_of_registered_subscribers == self.max_subscribers:
+            peerconn.senddata(NACK, '')
+            return
+
         datadict = json.loads(data)
         id = datadict['id']
         host = datadict['host']

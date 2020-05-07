@@ -27,8 +27,6 @@ class SensorPeer(NetworkPeer):
                              myid,
                              debug=debug)
 
-        # self.register_to_server()
-
         # TODO - add handlers if any
         handlers = {}
         self.add_handlers(handlers)
@@ -37,7 +35,8 @@ class SensorPeer(NetworkPeer):
         self.sendtopeer('main_server', 'IMGDATA', data)
 
     def register_to_server(self):
-        server_list = self.get_server_list_dict()
+        server_list = self.get_server_list()
+        print server_list
         for server in server_list:
             id, host, port = server
 
@@ -71,11 +70,6 @@ class SensorPeer(NetworkPeer):
                     self.add_typed_peer(id, host, port, PeerType.MESSAGESERVER)
                     return True
         return False
-
-    def get_server_list_dict(self):
-
-        # TODO - call the http function to get registration details
-        return [('192.168.0.222:1024', '192.168.0.222', 1024)]
 
     def publish_message(self, msg):
         recipient_id = self.get_peer_ids(PeerType.MESSAGESERVER)[0]

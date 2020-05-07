@@ -33,12 +33,10 @@ class SubscriberPeer(NetworkPeer):
         self.add_handlers(handlers)
 
     def register_to_server(self):
-        server_list = self.get_server_list_dict()
+        server_list = self.get_server_list()
         for server in server_list:
             id, host, port = server
 
-            # First try to register with the core
-            print host, port
             responses = self.connectandsend(host, port, REGSUB,
                                             json.dumps(self.identification))
             if len(responses) > 0:
@@ -48,8 +46,10 @@ class SubscriberPeer(NetworkPeer):
                     print 'subscriber has registered successfully'
                 elif msgtype == NACK:
                     # Ask for the list
+                    print 'subscriber has been denied the registration!'
                     res = self.connectandsend(host, port, SRVRLSTREQ, '')
                     _, msg = res[0]
+                    print 'trying to connect to a different node!'
                     if try_connecting_once(json.loads(msg)):
                         break
                 else:
@@ -68,11 +68,6 @@ class SubscriberPeer(NetworkPeer):
                     return True
         return False
 
-    def get_server_list_dict(self):
-
-        # TODO - call the http function to get registration details
-        return [('192.168.0.222:1024', '192.168.0.222', 1024)]
-
     def get_new_data_to_process(self, qty=5):
         recipient_id = self.get_peer_ids(PeerType.MESSAGESERVER)[0]
         print('getting new data from ', recipient_id)
@@ -81,7 +76,6 @@ class SubscriberPeer(NetworkPeer):
         datadict['address'] = self.myid
         res = self.sendtopeer(recipient_id, PULLIMG, json.dumps(datadict))
         print(res)
-
 
     def save_image_to_jpg(image_bytes, filename):
         pass
@@ -97,9 +91,6 @@ class SubscriberPeer(NetworkPeer):
         for d in datadict:
             di = json.loads(d)
             print di['speed']
-            filename = 'image.jpg'
-            save_image_to_jpg(di['image'], filename)
-            call_detection_process(filename)
-
-
-
+            # filename = 'image.jpg'
+            # save_image_to_jpg(di['image'], filename)
+            # call_detection_process(filename)

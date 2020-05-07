@@ -1,0 +1,1 @@
+CLOUD_FUNCTION_URL = 'https://us-central1-cc2020-project2.cloudfunctions.net/function-1'
