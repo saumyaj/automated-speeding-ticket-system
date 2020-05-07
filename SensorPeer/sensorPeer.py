@@ -54,7 +54,7 @@ class SensorPeer(NetworkPeer):
                     # Ask for the list
                     res = self.connectandsend(host, port, SRVRLSTREQ, '')
                     _, msg = res[0]
-                    if try_connecting_once(json.loads(msg)):
+                    if self.try_connecting_once(json.loads(msg)):
                         break
                 else:
                     print 'Unknown msgtype response!'
