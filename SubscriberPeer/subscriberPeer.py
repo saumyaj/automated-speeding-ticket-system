@@ -82,8 +82,7 @@ class SubscriberPeer(NetworkPeer):
         pass
 
     def call_detection_process(filename):
-        anpr_dir = ''
-        os.system('./detector_script.sh ' + anpr_dir + ' ' + filename)
+        os.system('./detector_script.sh ' + filename)
 
     def handle_pulled_data(self, peerconn, data):
         # TODO - Call the image processing services

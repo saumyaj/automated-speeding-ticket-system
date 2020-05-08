@@ -1,3 +1,3 @@
 conda activate detector
-cd $1/ANPR/Licence_plate_detection
-python detecor.py --image $2
+cd detection_and_recognition
+python detector.py --image $1
