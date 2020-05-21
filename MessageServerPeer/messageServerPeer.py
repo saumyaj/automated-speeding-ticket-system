@@ -99,7 +99,7 @@ class MessageServerPeer(NetworkPeer):
         ack_ids = []
         data = []
         for received_message in response.received_messages:
-            print("Received: {}".format(received_message.message.data))
+            # print("Received: {}".format(received_message.message.data))
             data.append(received_message.message.data)
             ack_ids.append(received_message.ack_id)
 
