@@ -83,7 +83,7 @@ def detect_text(crop_img):
 	response=client.detect_text(Image={'Bytes':content2})
 
 	print(response['TextDetections'][0]['DetectedText'])
-	input('')
+	# input('')
 
 
 # Remove the bounding boxes with low confidence using non-maxima suppression
@@ -100,16 +100,20 @@ def postprocess(frame, outs):
     confidences = []
     boxes = []
     for out in outs:
-        print("out.shape : ", out.shape)
+        # print("out.shape : ", out.shape)
         for detection in out:
+            # print(detection)
+            # print(confThreshold)
+            # input('')
             #if detection[4]>0.001:
             scores = detection[5:]
             classId = np.argmax(scores)
             #if scores[classId]>confThreshold:
             confidence = scores[classId]
             if detection[4]>confThreshold:
-                print(detection[4], " - ", scores[classId], " - th : ", confThreshold)
-                print(detection)
+                pass
+                # print(detection[4], " - ", scores[classId], " - th : ", confThreshold)
+                # print(detection)
             if confidence > confThreshold:
                 center_x = int(detection[0] * frameWidth)
                 center_y = int(detection[1] * frameHeight)
@@ -167,8 +171,8 @@ while cv.waitKey(1) < 0:
 
     # Stop the program if reached end of video
     if not hasFrame:
-        print("Done processing !!!")
-        print("Output file is stored as ", outputFile)
+        # print("Done processing !!!")
+        # print("Output file is stored as ", outputFile)
         cv.waitKey(3000)
         break
 
