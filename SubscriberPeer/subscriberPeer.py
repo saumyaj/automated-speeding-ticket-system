@@ -100,9 +100,11 @@ class SubscriberPeer(NetworkPeer):
         for d in datadict:
             json_data = json.loads(d)
             print json_data['speed']
-            file_bytes = bytearray(json_data['image_bytes'])
+            img_data = json_data['image_bytes']
             time_integer = int(time.time() * 1e6)
             filename = str(time_integer) + '.jpg'
-            save_image_to_jpg(file_bytes, filename)
+            with open(filename, "wb") as fh:
+                fh.write(img_data.decode('base64'))
+
             license_number = call_detection_process(filename)
             print 'yayyy!', license_number
