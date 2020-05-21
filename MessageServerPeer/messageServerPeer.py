@@ -32,8 +32,8 @@ ACKPULL = 'ACKP'  # Achknowledge pull req
 
 # Maximum peers of each type
 # TODO add to the constructor??
-MAXSENSORPEERS = 1
-MAXSUBSCRIBERPEERS = 1
+MAXSENSORPEERS = 100
+MAXSUBSCRIBERPEERS = 100
 
 
 class MessageServerPeer(NetworkPeer):

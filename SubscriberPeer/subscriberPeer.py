@@ -88,7 +88,8 @@ class SubscriberPeer(NetworkPeer):
         cv2.imwrite(filename, img_data_ndarray)
 
     def call_detection_process(filename):
-        result = subprocess.run(['./detector_script.sh', filename], stdout=subprocess.PIPE)
+        result = subprocess.run(['./detector_script.sh', filename],
+                                stdout=subprocess.PIPE)
         license_number = result.stdout.decode('utf-8')
         return license_number
 
@@ -99,9 +100,9 @@ class SubscriberPeer(NetworkPeer):
         for d in datadict:
             json_data = json.loads(d)
             print json_data['speed']
-            file_bytes = json_data['image_bytes']
-
-            time_integer = int(time.time()*1e6)
+            file_bytes = bytearray(json_data['image_bytes'])
+            time_integer = int(time.time() * 1e6)
             filename = str(time_integer) + '.jpg'
             save_image_to_jpg(file_bytes, filename)
             license_number = call_detection_process(filename)
+            print 'yayyy!', license_number
