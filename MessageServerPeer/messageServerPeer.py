@@ -105,7 +105,7 @@ class MessageServerPeer(NetworkPeer):
 
         # Acknowledges the received messages so they will not be sent again.
         self.subscriber.acknowledge(self.subscription_path, ack_ids)
-
+        print 'Pulled Images from the PubSub topic!'
         print 'sending to peer:', peer_id
         res = self.sendtopeer(peer_id, DATA, json.dumps(data))
         # print 'got the following reponse for the sent data!'
@@ -116,6 +116,7 @@ class MessageServerPeer(NetworkPeer):
         # datadict = json.loads(data)
         peerconn.senddata(ACKDATA, '')
         self.publisher.publish(self.topic_name, data)
+        print 'published to PubSub topic!'
 
     def handle_pull_image_request(self, peerconn, data):
         datadict = json.loads(data)
