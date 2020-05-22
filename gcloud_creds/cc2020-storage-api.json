@@ -1,12 +1,1 @@
-{
-  "type": "service_account",
-  "project_id": "cc2020-project2",
-  "private_key_id": "39b0fe822de1e68a54618cdb8ce2948e6619c817",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDL+1CH/mGQyRrO\n+f0Vt6dZu410LfzGqdkEtSMJkoxP3EC4h1KGiWqQhlgq2dIE+ju/TTKXiWMj4/++\nEJIZ5lj7WBm6a6Iqf+DBYeAVSTEcH4ucHTaIFTitrJepVyvSs5elxmtmvAun25zP\nAnwlN5vqFLLTYqDZir6aSZg1Wgy297aMCKlwv0yj/7rc1aSbHIFwy2i4Fyms7Hhe\n17CKraOijEApQ92COwpGeGZnpBvGpAJc+oe3CQGonmkehs/g56epBIWnTYsrQH0a\n83ZX8g+ke+APb+u+75hQsJvueNzlZUpRUO11BPseByPjmLfMDMhzlU7hd3Dyel6l\nn39LbMKlAgMBAAECggEAXlBfFeIafnVdveF8kXQPHsBHUTaKL9kMjM6r2ps14R73\nldqL38TdzuEvFvEL2F1TDsrE36gYfNnIv7qtsuf8sIo1qyplGr1x0DhPAciLunMj\nfBVNx3H4eOTaYuP5UTzUm0O5GRFNWlmCkXyWpiamIn9bh72Mnck3A+OPSuvOATKH\n1+4q3MddgGk/9fa11k55D9wA3fmA2gvEiGt+GcBqoyPQ+omhZ5BBAzDdZJDIqZod\nPPX4+YzIcT45DveRZFnKxy1Wnsnl4w8QCZY9CcA6WxbO0C+jowL+TDD9MGKYP/Wn\nruSYS6eFUKycShXkIEnCkDghkQsUBdE5WJjYyegNqQKBgQD4d8pXFfu1fzGQ+N9J\nmMg18tPi0TR7dYEes4aiPxQUNJhxdpYKQgk5WreOCYOoq6DeMH2s8KE5i3SMlgCU\nkTDc9kMtT1NnDmwHhB8sS41Z33i0BphuDVon5IQV5AjWOcwt+CElVAf1PBC8x80+\nbvQM51FsbD8t7Fn2ZPOjFHqKwwKBgQDSKksbD5sr4t5Y7+tf2Y4jH5LY3UBUzbnd\nH3r4ytf0vr96S+0AgbBINyWYMwWoftSm18IQQbf5ECXFGsaaxxhgemvMqJpqkDET\nvFIHPUxcdcZHD4drbEkbM/+zxKgVYe4JMy8UNkeUUbM/ZU9vPbh7hucxGf1eRUIw\nyF23/7iWdwKBgQCp9V7uFPZ5nwirruEluaFx7alsZEgvDyCEfK7iep1keNmx+zkE\nyUj/94LJYM6zaLsAYVEGJA9UioTtyYmaFnrDGpy2+KUHQIE63vBn30JQMKGjG0PX\nO8DoutJzGunEiAKXizw5CXLsF+snBtDpHQJJdU1oCd9prVuYRFO3wMFV+wKBgQDN\nZl5fBUKfgqvSejEtTV/YPfx0DNDZ0PKtBR5XV0/2uBJFgT0ReK6D9bm9ZWhLRCGr\nKkVVRBV8yuZPHBssnBbb++mtbL72FRSR+ESnJKaj2ss9GhU8zOkqOAjZdgLcWwic\nXzTM6TvN3od0FxyqWMUbnT4IxCDXaJMHQFwv/zI1gwKBgCX/6TFxlV1xM2rO7fk8\n0OFPkdNK8qHU0Z4RIrQvhiHAEwSL8hCOVjBI3ViSNNuIer0Rxy5bqB2YFXOsSbTA\nIA727FbbgUwbj/r+C5h50Latjw81x0tgVykq78X0+IOpFAFGIDKU0YGniZiOjrC5\nvEj/TsIfB3T6M9hNW8gFXCE2\n-----END PRIVATE KEY-----\n",
-  "client_email": "cloud-bucket-service-account@cc2020-project2.iam.gserviceaccount.com",
-  "client_id": "109932580740806177534",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cloud-bucket-service-account%40cc2020-project2.iam.gserviceaccount.com"
-}
+Google cloud bucket service account json

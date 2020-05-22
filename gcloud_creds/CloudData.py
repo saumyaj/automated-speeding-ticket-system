@@ -1,5 +1,5 @@
-CLOUD_FUNCTION_URL = 'https://us-central1-cc2020-project2.cloudfunctions.net/function-1'
+CLOUD_FUNCTION_URL = 'CLOUD BOOTSTRAP FUNCTION URL'
 
-EMAIL_FUNCTION_URL = 'https://us-central1-cc2020-project2.cloudfunctions.net/function-2'
+EMAIL_FUNCTION_URL = 'CLOUD EMAIL NOTIFICATION FUNCTION URL'
 
-SENDGRID_API_KEY = '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'
+SENDGRID_API_KEY = 'SEND GRID API KEY'
