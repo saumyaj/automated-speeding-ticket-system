@@ -12,21 +12,21 @@ from CloudData import SENDGRID_API_KEY
 
 OWNER_INFO_TABLE_NAME = 'OwnerInfo'
 
-aws_access_key_id='ASIA4KHZ3NQ4P5JC2ZUS'
-aws_secret_access_key='eEtzu/2sltcGm5EHil5H7CnsMnM7EFN496WkvXNp'
-aws_session_token='FwoGZXIvYXdzEPX//////////wEaDKlbxJ1iXv6ZjmtWtiK9ASNE56oltAdHmA9Vs5aYJAl0vGaPlhEjhTlmCygpzBW5zauzBRaJN5Osl39+yiyrusPXQldJ9RZsYjCPT6Og3IHDQfVk+VjOij2XBFuILmtNJqbiGn99njrxz0oES0It3yctKSMS1cXAQa00JNDVQ8ppfdEdp6OVT1LZhr20enGHTjLuy7xKiG3dIpLKm7OVJarZRcX0X7E695zNhlNgjYZXJTTCkBRTWO+PMkv+bKq8Hx51ewuPfcclmVPC5iiHnJ32BTItsfG7jHyLwPvE4N0pgkZJJ2xL+yccBEtHuegcqC3w4FMu3uAK51VKBUGegtq+'
+aws_access_key_id = 'ASIA4KHZ3NQ4P5JC2ZUS'
+aws_secret_access_key = 'eEtzu/2sltcGm5EHil5H7CnsMnM7EFN496WkvXNp'
+aws_session_token = 'FwoGZXIvYXdzEPX//////////wEaDKlbxJ1iXv6ZjmtWtiK9ASNE56oltAdHmA9Vs5aYJAl0vGaPlhEjhTlmCygpzBW5zauzBRaJN5Osl39+yiyrusPXQldJ9RZsYjCPT6Og3IHDQfVk+VjOij2XBFuILmtNJqbiGn99njrxz0oES0It3yctKSMS1cXAQa00JNDVQ8ppfdEdp6OVT1LZhr20enGHTjLuy7xKiG3dIpLKm7OVJarZRcX0X7E695zNhlNgjYZXJTTCkBRTWO+PMkv+bKq8Hx51ewuPfcclmVPC5iiHnJ32BTItsfG7jHyLwPvE4N0pgkZJJ2xL+yccBEtHuegcqC3w4FMu3uAK51VKBUGegtq+'
 
 lambda_client = boto3.client('lambda',
-                                aws_access_key_id=aws_access_key_id,
-                                aws_session_token=aws_session_token,
-                                aws_secret_access_key=aws_secret_access_key,
-                                region_name='us-east-1')
+                             aws_access_key_id=aws_access_key_id,
+                             aws_session_token=aws_session_token,
+                             aws_secret_access_key=aws_secret_access_key,
+                             region_name='us-east-1')
 
-dynamodb_resource = boto3.resource('dynamodb', 
-                                    aws_access_key_id=aws_access_key_id,
-                                    aws_session_token=aws_session_token,
-                                    aws_secret_access_key=aws_secret_access_key,
-                                    region_name='us-east-1')
+dynamodb_resource = boto3.resource('dynamodb',
+                                   aws_access_key_id=aws_access_key_id,
+                                   aws_session_token=aws_session_token,
+                                   aws_secret_access_key=aws_secret_access_key,
+                                   region_name='us-east-1')
 
 owner_table = dynamodb_resource.Table(OWNER_INFO_TABLE_NAME)
 
@@ -41,6 +41,7 @@ def add_ticket_to_db(json_payload):
     response = lambda_client.invoke(FunctionName="AddTicketLambdaFunction",
                                     InvocationType='Event',
                                     Payload=json_payload)
+    print 'Ticket added to database'
 
 
 def send_email_for_fine(email, ticket_id, speed='60', fine='0.6'):
@@ -53,7 +54,7 @@ def send_email_for_fine(email, ticket_id, speed='60', fine='0.6'):
         "speed": speed
     }
     response = requests.post(url=EMAIL_FUNCTION_URL, json=data)
-    print response.text
+    print 'Email notification for fine sent!'
 
 
 def find_owner_details(license_plate):
@@ -61,6 +62,7 @@ def find_owner_details(license_plate):
     response = owner_table.get_item(Key={'LicensePlate': license_plate})
     item = response['Item']
     email = str(item['email'])
+    print 'Owner found! ', email
     return email
 
 
@@ -81,18 +83,18 @@ def process_fine(license_plate, timestamp, speed, image_url=''):
 
 
 # def update_status():
-    # ACCESS_KEY = "ASIA4KHZ3NQ4CZO3EDFF"
-    # SECRET_KEY = "XtGEomqA0FohNS4qfqIVMvuTCb4IQELnTTWYg58h"
-    # SESSION_TOKEN = "FwoGZXIvYXdzEOb//////////wEaDA7NdurNvfVw2CJg7yK9AZdw0qcyOmaIcYReRmTOxm9GGttJmOpOYvIMGoB6bvAX1OS0yY1i28RSYLvlM7sLUFeW2VgiKk+ORaHRRqAeW3p2hQ2umq8qlyy5dQKnHclToPOZeRrNdIHIZcIgLsLD8iEptD3NN5hL6DnEltJX2QbSH1RvjyRgt7ioSyuUE9gdWTi1k3AFuxCZnUh9c4zZjBJCT8G1mdXcbyc04GutoPm4TSoDt0N8o5/G7FSIvqY3JUf45u46oXIOQD9leyif75n2BTIt2PI/ug78ido8Jh1ZgYTzenYWz0nSZTe+9dJbMF+5gOhuG/mBPRX4ZArpIOfz"
+# ACCESS_KEY = "ASIA4KHZ3NQ4CZO3EDFF"
+# SECRET_KEY = "XtGEomqA0FohNS4qfqIVMvuTCb4IQELnTTWYg58h"
+# SESSION_TOKEN = "FwoGZXIvYXdzEOb//////////wEaDA7NdurNvfVw2CJg7yK9AZdw0qcyOmaIcYReRmTOxm9GGttJmOpOYvIMGoB6bvAX1OS0yY1i28RSYLvlM7sLUFeW2VgiKk+ORaHRRqAeW3p2hQ2umq8qlyy5dQKnHclToPOZeRrNdIHIZcIgLsLD8iEptD3NN5hL6DnEltJX2QbSH1RvjyRgt7ioSyuUE9gdWTi1k3AFuxCZnUh9c4zZjBJCT8G1mdXcbyc04GutoPm4TSoDt0N8o5/G7FSIvqY3JUf45u46oXIOQD9leyif75n2BTIt2PI/ug78ido8Jh1ZgYTzenYWz0nSZTe+9dJbMF+5gOhuG/mBPRX4ZArpIOfz"
 
-    # dynamodb = boto3.resource('dynamodb',
-    #                           aws_access_key_id=ACCESS_KEY,
-    #                           aws_session_token=SESSION_TOKEN,
-    #                           aws_secret_access_key=SECRET_KEY,
-    #                           region_name='us-east-1')
-    # table = dynamodb.Table('Tickets')
+# dynamodb = boto3.resource('dynamodb',
+#                           aws_access_key_id=ACCESS_KEY,
+#                           aws_session_token=SESSION_TOKEN,
+#                           aws_secret_access_key=SECRET_KEY,
+#                           region_name='us-east-1')
+# table = dynamodb.Table('Tickets')
 
-    # response = table.update_item(
+# response = table.update_item(
 #         Key={'TicketId': 'idddddddd'},
 #         AttributeUpdates={'status': {
 #             'Value': 'finito',
@@ -102,7 +104,7 @@ def process_fine(license_plate, timestamp, speed, image_url=''):
 
 
 def process_image(filename, speed, timestamp):
-    # 
+    #
     # Storing image to cloud bucket
     blob = bucket.blob(filename)
     with open(filename, 'rb') as photo:
@@ -114,6 +116,7 @@ def process_image(filename, speed, timestamp):
     print license_plate
     # initiate fine procedure
     process_fine(license_plate, timestamp, speed, BUCKET_URL + filename)
+
 
 # process_image()
 

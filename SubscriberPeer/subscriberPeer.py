@@ -88,15 +88,15 @@ class SubscriberPeer(NetworkPeer):
         img_data_ndarray = cv2.imdecode(file_numpy, cv2.IMREAD_COLOR)
         cv2.imwrite(filename, img_data_ndarray)
 
-    def call_detection_process(filename):
-        result = subprocess.run(['./detector_script.sh', filename],
-                                stdout=subprocess.PIPE)
-        license_number = result.stdout.decode('utf-8')
-        return license_number
+    # def call_detection_process(filename):
+    #     result = subprocess.run(['./detector_script.sh', filename],
+    #                             stdout=subprocess.PIPE)
+    #     license_number = result.stdout.decode('utf-8')
+    #     return license_number
 
     def handle_pulled_data(self, peerconn, data):
         # TODO - Call the image processing services
-        print 'data handler invoked!'
+        # print 'data handler invoked!'
         datadict = json.loads(data)
         for d in datadict:
             json_data = json.loads(d)
@@ -106,5 +106,5 @@ class SubscriberPeer(NetworkPeer):
             filename = str(time_integer) + '.jpg'
             with open(filename, "wb") as fh:
                 fh.write(img_data.decode('base64'))
-            print 'image saved!'
+            # print 'image saved!'
             process_image(filename, str(speed), str(time_integer))
