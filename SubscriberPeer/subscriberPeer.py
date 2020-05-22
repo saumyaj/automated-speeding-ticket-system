@@ -2,13 +2,14 @@ import sys
 import os
 import base64
 import json
-import cv2
+# import cv2
 import time
 import subprocess
 
 sys.path.append(os.path.realpath('../p2p'))
 
 from networkPeer import *
+from databaseManager import process_image
 
 #Sending message Types
 PULLIMG = 'PULL'  # pull images request
@@ -99,12 +100,11 @@ class SubscriberPeer(NetworkPeer):
         datadict = json.loads(data)
         for d in datadict:
             json_data = json.loads(d)
-            print json_data['speed']
+            speed = json_data['speed']
             img_data = json_data['image_bytes']
             time_integer = int(time.time() * 1e6)
             filename = str(time_integer) + '.jpg'
             with open(filename, "wb") as fh:
                 fh.write(img_data.decode('base64'))
-
-            license_number = call_detection_process(filename)
-            print 'yayyy!', license_number
+            print 'image saved!'
+            process_image(filename, str(speed), str(time_integer))

@@ -26,7 +26,7 @@ def send_messages(peer):
     with open("lamb.jpg", "rb") as img_file:
         my_string = base64.b64encode(img_file.read())
 
-    while i < 10:
+    while i < 1:
         print 'sending msg', i
         dic = {"speed": (100 + i), "image_bytes": my_string}
         peer.publish_message(json.dumps(dic))
