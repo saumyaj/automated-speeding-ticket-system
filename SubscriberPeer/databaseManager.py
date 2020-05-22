@@ -12,9 +12,14 @@ from CloudData import SENDGRID_API_KEY
 
 OWNER_INFO_TABLE_NAME = 'OwnerInfo'
 
-aws_access_key_id = 'ASIA4KHZ3NQ4P5JC2ZUS'
-aws_secret_access_key = 'eEtzu/2sltcGm5EHil5H7CnsMnM7EFN496WkvXNp'
-aws_session_token = 'FwoGZXIvYXdzEPX//////////wEaDKlbxJ1iXv6ZjmtWtiK9ASNE56oltAdHmA9Vs5aYJAl0vGaPlhEjhTlmCygpzBW5zauzBRaJN5Osl39+yiyrusPXQldJ9RZsYjCPT6Og3IHDQfVk+VjOij2XBFuILmtNJqbiGn99njrxz0oES0It3yctKSMS1cXAQa00JNDVQ8ppfdEdp6OVT1LZhr20enGHTjLuy7xKiG3dIpLKm7OVJarZRcX0X7E695zNhlNgjYZXJTTCkBRTWO+PMkv+bKq8Hx51ewuPfcclmVPC5iiHnJ32BTItsfG7jHyLwPvE4N0pgkZJJ2xL+yccBEtHuegcqC3w4FMu3uAK51VKBUGegtq+'
+
+aws_access_key_id='ASIA4KHZ3NQ4NIQTD5FP'
+aws_secret_access_key='6MdM1CNeZ1ZLuQybIfNo9LWAUkEbk+IWcdvykOYD'
+aws_session_token='FwoGZXIvYXdzEP///////////wEaDOrf2AfdMhRva4iiOCK9AUSTfg984aXxBPl3LtDboTTgopzluj43Ib+uhbz75PsMciOn+FJKLVNWH+vQiiQy9t04FF5QXL0/L4hL2iBLMXR8HOp4EV+P00DJqhMsOnu4G85DoRRrY1n37cSIgD3/jStiqUN+bXuy3m5JaRbxqzWQo7cEzD43gNC03JniUtjCDgusegzbKffbdJS9g3PyrPVqaW0O9I0GxCprX+0TNCQi5zJmzRy+lc11UcX8XTI+Jj9IK0Sd8dWXr08oKyjjn5/2BTIt8xmjkUucruAtC6QDV32BFonST+REIgMmwRaKBPkrot+p6HylfaCMiLjHF5SK'
+
+# aws_access_key_id = 'ASIA4KHZ3NQ4P5JC2ZUS'
+# aws_secret_access_key = 'eEtzu/2sltcGm5EHil5H7CnsMnM7EFN496WkvXNp'
+# aws_session_token = 'FwoGZXIvYXdzEPX//////////wEaDKlbxJ1iXv6ZjmtWtiK9ASNE56oltAdHmA9Vs5aYJAl0vGaPlhEjhTlmCygpzBW5zauzBRaJN5Osl39+yiyrusPXQldJ9RZsYjCPT6Og3IHDQfVk+VjOij2XBFuILmtNJqbiGn99njrxz0oES0It3yctKSMS1cXAQa00JNDVQ8ppfdEdp6OVT1LZhr20enGHTjLuy7xKiG3dIpLKm7OVJarZRcX0X7E695zNhlNgjYZXJTTCkBRTWO+PMkv+bKq8Hx51ewuPfcclmVPC5iiHnJ32BTItsfG7jHyLwPvE4N0pgkZJJ2xL+yccBEtHuegcqC3w4FMu3uAK51VKBUGegtq+'
 
 lambda_client = boto3.client('lambda',
                              aws_access_key_id=aws_access_key_id,
