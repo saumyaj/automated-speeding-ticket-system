@@ -32,8 +32,8 @@ ACKPULL = 'ACKP'  # Achknowledge pull req
 
 # Maximum peers of each type
 # TODO add to the constructor??
-MAXSENSORPEERS = 1
-MAXSUBSCRIBERPEERS = 1
+MAXSENSORPEERS = 100
+MAXSUBSCRIBERPEERS = 100
 
 
 class MessageServerPeer(NetworkPeer):
@@ -99,23 +99,24 @@ class MessageServerPeer(NetworkPeer):
         ack_ids = []
         data = []
         for received_message in response.received_messages:
-            print("Received: {}".format(received_message.message.data))
+            # print("Received: {}".format(received_message.message.data))
             data.append(received_message.message.data)
             ack_ids.append(received_message.ack_id)
 
         # Acknowledges the received messages so they will not be sent again.
         self.subscriber.acknowledge(self.subscription_path, ack_ids)
-
+        print 'Pulled Images from the PubSub topic!'
         print 'sending to peer:', peer_id
         res = self.sendtopeer(peer_id, DATA, json.dumps(data))
-        print 'got the following reponse for the sent data!'
+        # print 'got the following reponse for the sent data!'
         print res
 
     def handle_publish_request(self, peerconn, data):
-        print('data being handled!')
+        # print('data being handled!')
         # datadict = json.loads(data)
         peerconn.senddata(ACKDATA, '')
         self.publisher.publish(self.topic_name, data)
+        print 'published to PubSub topic!'
 
     def handle_pull_image_request(self, peerconn, data):
         datadict = json.loads(data)
@@ -154,6 +155,7 @@ class MessageServerPeer(NetworkPeer):
         port = datadict['port']
         self.add_typed_peer(id, host, port, PeerType.SUBSCRIBER)
         peerconn.senddata(ACKOK, '')
+        print 'Registered a new subscriber!'
 
     def handle_message_server_registration(self, peerconn, data):
         datadict = json.loads(data)
@@ -164,7 +166,7 @@ class MessageServerPeer(NetworkPeer):
         peerconn.senddata(ACKOK, '')
 
     def handle_server_list_request(self, peerconn, data):
-        print 'server list req received!'
+        # print 'server list req received!'
         server_list_dict = self.typed_peerlist.get(PeerType.MESSAGESERVER.name,
                                                    {})
         server_list = []

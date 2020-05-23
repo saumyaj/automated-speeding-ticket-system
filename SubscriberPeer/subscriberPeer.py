@@ -2,9 +2,14 @@ import sys
 import os
 import base64
 import json
+# import cv2
+import time
+import subprocess
+
 sys.path.append(os.path.realpath('../p2p'))
 
 from networkPeer import *
+from databaseManager import process_image
 
 #Sending message Types
 PULLIMG = 'PULL'  # pull images request
@@ -78,20 +83,28 @@ class SubscriberPeer(NetworkPeer):
         res = self.sendtopeer(recipient_id, PULLIMG, json.dumps(datadict))
         print(res)
 
-    def save_image_to_jpg(image_bytes, filename):
-        pass
+    def save_image_to_jpg(file_bytes, filename):
+        file_numpy = numpy.asarray(file_bytes, dtype=numpy.uint8)
+        img_data_ndarray = cv2.imdecode(file_numpy, cv2.IMREAD_COLOR)
+        cv2.imwrite(filename, img_data_ndarray)
 
-    def call_detection_process(filename):
-        anpr_dir = ''
-        os.system('./detector_script.sh ' + anpr_dir + ' ' + filename)
+    # def call_detection_process(filename):
+    #     result = subprocess.run(['./detector_script.sh', filename],
+    #                             stdout=subprocess.PIPE)
+    #     license_number = result.stdout.decode('utf-8')
+    #     return license_number
 
     def handle_pulled_data(self, peerconn, data):
         # TODO - Call the image processing services
-        print 'data handler invoked!'
+        # print 'data handler invoked!'
         datadict = json.loads(data)
         for d in datadict:
-            di = json.loads(d)
-            print di['speed']
-            # filename = 'image.jpg'
-            # save_image_to_jpg(di['image'], filename)
-            # call_detection_process(filename)
+            json_data = json.loads(d)
+            speed = json_data['speed']
+            img_data = json_data['image_bytes']
+            time_integer = int(time.time() * 1e6)
+            filename = str(time_integer) + '.jpg'
+            with open(filename, "wb") as fh:
+                fh.write(img_data.decode('base64'))
+            # print 'image saved!'
+            process_image(filename, str(speed), str(time_integer))

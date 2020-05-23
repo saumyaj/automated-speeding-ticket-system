@@ -1,5 +1,6 @@
 import multiprocessing
 import time
+import base64
 
 from sensorPeer import *
 
@@ -18,10 +19,16 @@ def simulate(peer):
 
 
 def send_messages(peer):
-    i = 0
-    while i < 10:
+    i = 1
+    # with open('lamb.jpg', 'rb') as imageStream:
+    #     filebytes = bytearray(imageStream.read())
+
+    while i < 4:
         print 'sending msg', i
-        dic = {"speed": (100 + i)}
+        filename = str(i) + '.jpeg'
+        with open(filename, "rb") as img_file:
+            my_string = base64.b64encode(img_file.read())
+        dic = {"speed": (50 + i * 10), "image_bytes": my_string}
         peer.publish_message(json.dumps(dic))
         i += 1
         time.sleep(2)

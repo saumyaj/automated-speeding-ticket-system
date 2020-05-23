@@ -35,13 +35,13 @@ class SensorPeer(NetworkPeer):
         self.sendtopeer('main_server', 'IMGDATA', data)
 
     def register_to_server(self):
-        print 'called!'
+        # print 'called!'
         server_list = self.get_server_list()
         print server_list
         for server in server_list:
 
             id, host, port = server
-            print id
+            # print id
             # First try to register with the core
             responses = self.connectandsend(host, port, REGSENSOR,
                                             json.dumps(self.identification))
@@ -75,6 +75,6 @@ class SensorPeer(NetworkPeer):
 
     def publish_message(self, msg):
         recipient_id = self.get_peer_ids(PeerType.MESSAGESERVER)[0]
-        print('sending to ', recipient_id)
+        print('sending message to ', recipient_id)
         res = self.sendtopeer(recipient_id, PUBIMG, msg)
         print(res)
